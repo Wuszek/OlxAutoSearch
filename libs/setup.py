@@ -19,4 +19,3 @@ def set_up(website):
     driver.implicitly_wait(10)
     driver.get(website)
     return driver
-
