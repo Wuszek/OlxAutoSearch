@@ -2,9 +2,9 @@ import argparse
 import sys
 import time
 from libs.setup import set_up
-from libs.search import search_by_id, search_by_css, search_by_xpath, search_all_by_class_name, search_all_by_xpath
+from libs.search import search_by_id, search_by_css, search_by_xpath, search_all_by_xpath
 from libs.elements import *
-from libs.func import create_elements_list
+from libs.func import create_elements_list, create_dictionary
 
 
 class OlxSearch:
@@ -20,7 +20,8 @@ class OlxSearch:
         search_by_css(self.driver, SEARCH_BUTTON_CSS).click()
 
     def get_all_items(self):
-        item_title = search_all_by_class_name(self.driver, ITEMS_NAME_CLASS_NAME)
+        item_title = search_all_by_xpath(self.driver, ITEMS_NAME_XPATH)
+        # for el in item_title: print(el.text)
         title_list = create_elements_list(item_title, "")
 
         item_price = search_all_by_xpath(self.driver, ITEM_PRICE_XPATH)
@@ -31,9 +32,17 @@ class OlxSearch:
         return title_list, price_list, location_list
 
     @staticmethod
+    def create_dict(tlist: list, plist: list, llist: list, given_city, max_value):
+        new_dict = {k: v for k, *v in zip(tlist, plist, llist)}
+        # print(new_dict)
+        items_dict = create_dictionary(new_dict, given_city, max_value)
+        print("DICT: ")
+        print(items_dict)
+
+    @staticmethod
     def getOpt(argv):
         parser = argparse.ArgumentParser \
-            (usage="python3 olx.py -i '<itme_to_search>' -c '<city_to_search>' [-h]",
+            (usage="python3 olx.py -i '<itme_to_search>' -c '<city_to_search>' -v <max_value> [-h]",
              description="Description",
              epilog="© 2022, wiktor.kobiela", prog="OlxAutoSearch",
              add_help=False,
@@ -44,13 +53,16 @@ class OlxSearch:
                               help='Provide item name, that should be searched')
         required.add_argument('-c', action='store', dest="city", required=True, metavar="<city_to_search_in>",
                               help='Provide city name, where item should be searched')
+        required.add_argument('-v', action='store', dest="value", required=True, metavar="<value>",
+                              help='Provide max value of searched item')
         helpful.add_argument('-h', action='help', help='Show this help message and exit')
         args = parser.parse_args()
-        return args.item, args.city
+        return args.item, args.city, args.value
 
 
 sss = OlxSearch()
-item, city = sss.getOpt(sys.argv[1:])
+item, city, value = sss.getOpt(sys.argv[1:])
 
 sss.initiate_search(item_to_search=item, city_to_search=city)
-sss.get_all_items()
+t_list, p_list, l_list = sss.get_all_items()
+sss.create_dict(t_list, p_list, l_list, city, value)
