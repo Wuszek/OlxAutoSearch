@@ -1,9 +1,10 @@
 import argparse
 import sys
-from libs.setup import set_up
-from libs.search import search_by_id, search_by_css, search_by_xpath
-from libs.elements import *
 import time
+from libs.setup import set_up
+from libs.search import search_by_id, search_by_css, search_by_xpath, search_all_by_class_name, search_all_by_xpath
+from libs.elements import *
+from libs.func import create_elements_list
 
 
 class OlxSearch:
@@ -11,14 +12,23 @@ class OlxSearch:
     def __init__(self):
         self.driver = set_up(WEBSITE)
 
-    def search_item(self, item_to_search, city_to_search):
+    def initiate_search(self, item_to_search, city_to_search):
         search_by_id(self.driver, COOKIES_BUTTON_ID).click()
         search_by_xpath(self.driver, SEARCH_BAR_ITEM_XPATH).send_keys(item_to_search)
         search_by_css(self.driver, SEARCH_BAR_CITY_CSS).send_keys(city_to_search)
         time.sleep(2)
         search_by_css(self.driver, SEARCH_BUTTON_CSS).click()
 
-        self.driver.quit()
+    def get_all_items(self):
+        item_title = search_all_by_class_name(self.driver, ITEMS_NAME_CLASS_NAME)
+        title_list = create_elements_list(item_title, "")
+
+        item_price = search_all_by_xpath(self.driver, ITEM_PRICE_XPATH)
+        price_list = create_elements_list(item_price, "do negocjacji")
+
+        item_location = search_all_by_xpath(self.driver, ITEM_LOCATION_XPATH)
+        location_list = create_elements_list(item_location, " - .*$")
+        return title_list, price_list, location_list
 
     @staticmethod
     def getOpt(argv):
@@ -42,4 +52,5 @@ class OlxSearch:
 sss = OlxSearch()
 item, city = sss.getOpt(sys.argv[1:])
 
-sss.search_item(item_to_search=item, city_to_search=city)
+sss.initiate_search(item_to_search=item, city_to_search=city)
+sss.get_all_items()

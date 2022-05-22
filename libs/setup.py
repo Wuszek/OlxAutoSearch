@@ -10,7 +10,7 @@ def __init__(self):
 
 def set_up(website):
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument('--no-sandbox --profile-directory=Default')
     # s = Service('drivers/chromedriver')
     s = Service(ChromeDriverManager().install())
