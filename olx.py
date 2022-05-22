@@ -10,6 +10,9 @@ from libs.func import create_elements_list, create_dictionary
 class OlxSearch:
 
     def __init__(self):
+        self.driver = None
+
+    def start(self):
         self.driver = set_up(WEBSITE)
 
     def initiate_search(self, item_to_search, city_to_search):
@@ -65,7 +68,7 @@ class OlxSearch:
 
 sss = OlxSearch()
 item, city, value = sss.getOpt(sys.argv[1:])
-
+sss.start()
 sss.initiate_search(item_to_search=item, city_to_search=city)
 t_list, p_list, l_list, u_list = sss.get_all_items()
 sss.create_dict(t_list, p_list, l_list, u_list, city, value)
