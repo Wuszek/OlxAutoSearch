@@ -9,3 +9,5 @@ ITEM_NAME_XPATH = "//div[@class='css-u2ayx9']/h6"
 ITEM_PRICE_XPATH = "//div[@class='css-u2ayx9']/p"
 ITEM_LOCATION_XPATH = "//div/p[@class='css-p6wsjo-Text eu5v0x0']"
 ITEM_URL_XPATH = "//div[@class='css-19ucd76']/a"
+
+PAGINATION_FORWARD_CSS = "[data-testid='pagination-forward']"

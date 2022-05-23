@@ -2,7 +2,7 @@ import argparse
 import sys
 import time
 from libs.setup import set_up
-from libs.search import search_by_id, search_by_css, search_by_xpath, search_all_by_xpath
+from libs.search import search_by_id, search_by_css, search_by_xpath, search_all_by_xpath, search_pagination_forward
 from libs.elements import *
 from libs.func import create_elements_list, create_dictionary
 
@@ -14,6 +14,7 @@ class OlxSearch:
 
     def start(self):
         self.driver = set_up(WEBSITE)
+        return self.driver
 
     def initiate_search(self, item_to_search, city_to_search):
         search_by_id(self.driver, COOKIES_BUTTON_ID).click()
@@ -43,7 +44,8 @@ class OlxSearch:
         print(f"INFO : There are {len(items_dict)} items matching given requirements:")
         for k, v in items_dict.items(): print(f"{k}: {v}")
         # print(items_dict)
-        self.driver.quit()
+        # self.driver.quit()
+
 
     @staticmethod
     def getOpt(argv):
@@ -68,7 +70,11 @@ class OlxSearch:
 
 sss = OlxSearch()
 item, city, value = sss.getOpt(sys.argv[1:])
-sss.start()
+driver = sss.start()
 sss.initiate_search(item_to_search=item, city_to_search=city)
 t_list, p_list, l_list, u_list = sss.get_all_items()
 sss.create_dict(t_list, p_list, l_list, u_list, city, value)
+# if more pages
+while search_pagination_forward(driver, PAGINATION_FORWARD_CSS):
+    t_list, p_list, l_list, u_list = sss.get_all_items()
+    sss.create_dict(t_list, p_list, l_list, u_list, city, value)

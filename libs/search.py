@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementClickInterceptedException
 from selenium.webdriver.support import expected_conditions as EC
@@ -67,3 +69,14 @@ def search_all_by_xpath(driver, element_xpath):
         print(f"ERROR : {e}")
     except TimeoutException as t:
         print(f"ERROR : {t}")
+
+
+def search_pagination_forward(driver, element_css):
+    try:
+        element = driver.find_element(By.CSS_SELECTOR, element_css)
+        print("Jest kolejna strona!")
+        element.click()
+        return True
+    except Exception:
+        print("Brak kolejnej strony")
+        return False
