@@ -4,7 +4,7 @@ import time
 from libs.setup import set_up
 from libs.search import search_by_id, search_by_css, search_by_xpath, search_all_by_xpath
 from libs.elements import *
-from libs.func import create_elements_list, create_dictionary
+from libs.func import create_elements_list, create_dictionary, create_database
 
 
 class OlxSearch:
@@ -44,6 +44,11 @@ class OlxSearch:
         for k, v in items_dict.items(): print(f"{k}: {v}")
         # print(items_dict)
         self.driver.quit()
+        return items_dict
+
+    @staticmethod
+    def write_to_file(dictionary: dict):
+        create_database(dictionary)
 
     @staticmethod
     def getOpt(argv):
@@ -71,4 +76,5 @@ item, city, value = sss.getOpt(sys.argv[1:])
 sss.start()
 sss.initiate_search(item_to_search=item, city_to_search=city)
 t_list, p_list, l_list, u_list = sss.get_all_items()
-sss.create_dict(t_list, p_list, l_list, u_list, city, value)
+d = sss.create_dict(t_list, p_list, l_list, u_list, city, value)
+sss.write_to_file(dictionary=d)
