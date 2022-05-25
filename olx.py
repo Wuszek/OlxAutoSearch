@@ -51,7 +51,7 @@ class OlxSearch:
     @staticmethod
     def getOpt(argv):
         parser = argparse.ArgumentParser \
-            (usage="python3 olx.py -i '<itme_to_search>' -c '<city_to_search>' -v <max_value> [-h]",
+            (usage="python3 olx.py -i <item_to_search> -c <city_to_search> -v <max_value> [-h]",
              description="Description",
              epilog="© 2022, wiktor.kobiela", prog="OlxAutoSearch",
              add_help=False,
@@ -69,13 +69,13 @@ class OlxSearch:
         return args.item, args.city, args.value
 
 
-sss = OlxSearch()
-item, city, value = sss.getOpt(sys.argv[1:])
-sss.start()
-sss.initiate_search(item_to_search=item, city_to_search=city)
-t_list, p_list, l_list, u_list = sss.get_all_items()
-d = sss.create_dict(t_list, p_list, l_list, u_list, city, value)
-sss.write_to_file(dictionary=d)
+olx = OlxSearch()
+item, city, value = olx.getOpt(sys.argv[1:])
+olx.start()
+olx.initiate_search(item_to_search=item, city_to_search=city)
+t_list, p_list, l_list, u_list = olx.get_all_items()
+d = olx.create_dict(t_list, p_list, l_list, u_list, city, value)
+olx.write_to_file(dictionary=d)
 
 """
 Test dictionary
