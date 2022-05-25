@@ -73,8 +73,17 @@ class OlxSearch:
 
 sss = OlxSearch()
 item, city, value = sss.getOpt(sys.argv[1:])
-sss.start()
-sss.initiate_search(item_to_search=item, city_to_search=city)
-t_list, p_list, l_list, u_list = sss.get_all_items()
-d = sss.create_dict(t_list, p_list, l_list, u_list, city, value)
+# sss.start()
+# sss.initiate_search(item_to_search=item, city_to_search=city)
+# t_list, p_list, l_list, u_list = sss.get_all_items()
+# d = sss.create_dict(t_list, p_list, l_list, u_list, city, value)
+d = {
+    "kanapa1": ["rzecz 1", "rzecz15", "https://link_do_czegos.com"],
+    "kanapa2": ["rzecz 2", "rzecz25", "https://link_do_czegos2.com"],
+    "kanapa3": ["rzecz 3", "rzecz35", "https://link_do_czegos3.com"],
+    "kanapa4": ["rzecz 4", "rzecz45", "https://link_do_czegos4.com"],
+    "kanapa5": ["rzecz 5", "rzecz55", "https://link_do_czegos5.com"],
+    "kanapa6": ["rzecz 6", "rzecz65", "https://link_do_czegos6.com"],
+}
+
 sss.write_to_file(dictionary=d)

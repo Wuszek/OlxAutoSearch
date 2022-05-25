@@ -27,20 +27,28 @@ def create_dictionary(given_dictionary: dict, given_city, max_value):
 
 
 def create_database(given_dictionary: dict):
-    print("przed open")
     with open("data.txt", 'r+') as file:
+        file.seek(0)
+        lines = [line.rstrip() for line in file.readlines()]
+        print(lines)
         for k, v in list(given_dictionary.items()):
-            print("w for dict")
-            if os.stat("data.txt").st_size == 0:
-                file.write(f"{v[2]}\n")
+            if v[2] in lines:
+                print(f"{v[2]} jest w pliku!")
+                del given_dictionary[k]
             else:
-                for line in file:
-                    print("w for file")
-                    print(line)
-                    print(v[2])
-                    line_strip = line.strip()
-                    if v[2] == line_strip:
-                        del given_dictionary[k]
-                    else:
-                        file.write(f"{v[2]}\n")
+                print(f"{v[2]} jest nówka")
+                lines.append(v[2])
+        if given_dictionary != {}:
+            print(given_dictionary)
+        else:
+            print(f"Słownik jest pusty. Nic nowego.")
+
+        print(lines)
+
+        while "" in lines:
+            lines.remove("")
+
+        file.seek(0)
+        file.truncate()
+        file.write("\n".join(lines))
     file.close()
