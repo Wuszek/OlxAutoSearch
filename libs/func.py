@@ -40,7 +40,7 @@ def create_database(given_dictionary: dict):
     with open("data", 'r+') as file:
         file.seek(0)
         lines = [line.rstrip() for line in file.readlines()]
-        print(f"INFO : List with links: {lines}")
+        print(f"INFO : Old list with links: {lines}")
         for k, v in list(given_dictionary.items()):
             if v[2] in lines:
                 print(f"INFO : {v[2]} already in database")
