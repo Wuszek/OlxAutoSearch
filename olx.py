@@ -80,10 +80,8 @@ item, city, value = sss.getOpt(sys.argv[1:])
 d = {
     "kanapa1": ["rzecz 1", "rzecz15", "https://link_do_czegos.com"],
     "kanapa2": ["rzecz 2", "rzecz25", "https://link_do_czegos2.com"],
-    "kanapa3": ["rzecz 3", "rzecz35", "https://link_do_czegos3.com"],
-    "kanapa4": ["rzecz 4", "rzecz45", "https://link_do_czegos4.com"],
-    "kanapa5": ["rzecz 5", "rzecz55", "https://link_do_czegos5.com"],
-    "kanapa6": ["rzecz 6", "rzecz65", "https://link_do_czegos6.com"],
+    "kanapa16": ["rzecz 7", "rzecz6", "https://link_do_czegos666.com"],
+    "kanapa6": ["cena", "lokalizacja", "https://link_do_itemka.com"]
 }
 
 sss.write_to_file(dictionary=d)

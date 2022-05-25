@@ -26,24 +26,34 @@ def create_dictionary(given_dictionary: dict, given_city, max_value):
     return given_dictionary
 
 
+def create_database_file():
+    if os.path.isfile('data'):
+        print("INFO : Database exists.")
+    else:
+        file = open("data", 'w')
+        file.close()
+        print("INFO : Created database file.")
+
+
 def create_database(given_dictionary: dict):
-    with open("data.txt", 'r+') as file:
+    create_database_file()
+    with open("data", 'r+') as file:
         file.seek(0)
         lines = [line.rstrip() for line in file.readlines()]
-        print(lines)
+        print(f"INFO : List with links: {lines}")
         for k, v in list(given_dictionary.items()):
             if v[2] in lines:
-                print(f"{v[2]} jest w pliku!")
+                print(f"INFO : {v[2]} already in database")
                 del given_dictionary[k]
             else:
-                print(f"{v[2]} jest nówka")
+                print(f"INFO : {v[2]} is new")
                 lines.append(v[2])
         if given_dictionary != {}:
-            print(given_dictionary)
+            print(f"INFO : New items to send notification: {given_dictionary}")
         else:
-            print(f"Słownik jest pusty. Nic nowego.")
+            print(f"INFO : No new items")
 
-        print(lines)
+        print(f"INFO : Updated list with links: {lines}")
 
         while "" in lines:
             lines.remove("")

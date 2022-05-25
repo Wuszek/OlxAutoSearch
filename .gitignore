@@ -6,7 +6,7 @@ __pycache__/
 
 # Project specific
 venv/
-data.txt
+data
 
 # C extensions
 *.so
