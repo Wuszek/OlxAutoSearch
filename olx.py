@@ -4,7 +4,7 @@ import time
 from libs.setup import set_up
 from libs.search import search_by_id, search_by_css, search_by_xpath, search_all_by_xpath
 from libs.elements import *
-from libs.func import create_elements_list, create_dictionary
+from libs.func import create_elements_list, create_dictionary, create_database
 
 
 class OlxSearch:
@@ -38,17 +38,20 @@ class OlxSearch:
 
     def create_dict(self, tlist: list, plist: list, llist: list, ulist: list, given_city, max_value):
         new_dict = {k: v for k, *v in zip(tlist, plist, llist, ulist)}
-        # print(new_dict)
         items_dict = create_dictionary(new_dict, given_city, max_value)
         print(f"INFO : There are {len(items_dict)} items matching given requirements:")
-        for k, v in items_dict.items(): print(f"{k}: {v}")
-        # print(items_dict)
+        for k, v in items_dict.items(): print(f"DICT : {k}: {v}")
         self.driver.quit()
+        return items_dict
+
+    @staticmethod
+    def write_to_file(dictionary: dict):
+        create_database(dictionary)
 
     @staticmethod
     def getOpt(argv):
         parser = argparse.ArgumentParser \
-            (usage="python3 olx.py -i '<itme_to_search>' -c '<city_to_search>' -v <max_value> [-h]",
+            (usage="python3 olx.py -i <item_to_search> -c <city_to_search> -v <max_value> [-h]",
              description="Description",
              epilog="© 2022, wiktor.kobiela", prog="OlxAutoSearch",
              add_help=False,
@@ -66,9 +69,20 @@ class OlxSearch:
         return args.item, args.city, args.value
 
 
-sss = OlxSearch()
-item, city, value = sss.getOpt(sys.argv[1:])
-sss.start()
-sss.initiate_search(item_to_search=item, city_to_search=city)
-t_list, p_list, l_list, u_list = sss.get_all_items()
-sss.create_dict(t_list, p_list, l_list, u_list, city, value)
+olx = OlxSearch()
+item, city, value = olx.getOpt(sys.argv[1:])
+olx.start()
+olx.initiate_search(item_to_search=item, city_to_search=city)
+t_list, p_list, l_list, u_list = olx.get_all_items()
+d = olx.create_dict(t_list, p_list, l_list, u_list, city, value)
+olx.write_to_file(dictionary=d)
+
+"""
+Test dictionary
+d = {
+    "kanapa1": ["rzecz 1", "rzecz15", "https://link_do_czegos.com"],
+    "kanapa2": ["rzecz 2", "rzecz25", "https://link_do_czegos2.com"],
+    "kanapa16": ["rzecz 7", "rzecz6", "https://link_do_czegos666.com"],
+    "kanapa6": ["cena", "lokalizacja", "https://link_do_itemka.com"]
+}
+"""
