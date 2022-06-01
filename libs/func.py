@@ -1,5 +1,6 @@
 import os
 import re
+from libs.setup import discord_notify_setup
 
 
 def create_elements_list(items_list: list, elem_to_cut, attribute):
@@ -56,3 +57,23 @@ def create_database(given_dictionary: dict):
         file.truncate()
         file.write("\n".join(lines))
     file.close()
+    return given_dictionary
+
+
+def send_notification(new_items: dict, webhook):
+    if discord_notify_setup():
+        command_list = ""
+        for k, v in list(new_items.items()):
+            command_list = command_list + f"{k}, {v[0]}, {v[2]} \t"
+        print(command_list)
+        command = f'./discord.sh \
+                    --webhook-url="{webhook}" \
+                    --username "GiteaBot" \
+                    --avatar "https://docs.gitea.io/images/gitea.png" \
+                    --text "{command_list}"'
+        #print(command)
+        #msg = os.popen(command).read()
+        # if "fatal" in msg:
+        #     print("ERROR : Something went wrong while running 'discord.sh' (webhook?). \t PASS".expandtabs(90))
+        # else:
+        #     print("DEBUG : Discord message sent successfully. \t DONE".expandtabs(90))

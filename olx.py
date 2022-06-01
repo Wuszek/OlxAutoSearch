@@ -4,7 +4,7 @@ import time
 from libs.setup import set_up
 from libs.search import search_by_id, search_by_css, search_by_xpath, search_all_by_xpath
 from libs.elements import *
-from libs.func import create_elements_list, create_dictionary, create_database
+from libs.func import create_elements_list, create_dictionary, create_database, send_notification
 
 
 class OlxSearch:
@@ -46,7 +46,15 @@ class OlxSearch:
 
     @staticmethod
     def write_to_file(dictionary: dict):
-        create_database(dictionary)
+        new_items = create_database(dictionary)
+        return new_items
+
+    @staticmethod
+    def ping(dictionary: dict):
+        if dictionary != {}:
+            send_notification(dictionary, "Fake_hook_url")
+        else:
+            print("No items to send")
 
     @staticmethod
     def getOpt(argv):
@@ -75,7 +83,9 @@ olx.start()
 olx.initiate_search(item_to_search=item, city_to_search=city)
 t_list, p_list, l_list, u_list = olx.get_all_items()
 d = olx.create_dict(t_list, p_list, l_list, u_list, city, value)
-olx.write_to_file(dictionary=d)
+new_items = olx.write_to_file(dictionary=d)
+
+olx.ping(new_items)
 
 """
 Test dictionary
