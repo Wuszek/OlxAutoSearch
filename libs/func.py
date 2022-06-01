@@ -49,7 +49,7 @@ def create_database(given_dictionary: dict):
         if given_dictionary != {}:
             print(f"INFO : New items to send notification: {given_dictionary}")
         else:
-            print(f"INFO : No new items")
+            print(f"INFO : No new items (all items from olx already in database).")
         print(f"INFO : Updated list with links: {lines}")
         while "" in lines:
             lines.remove("")
@@ -64,16 +64,14 @@ def send_notification(new_items: dict, webhook):
     if discord_notify_setup():
         command_list = ""
         for k, v in list(new_items.items()):
-            command_list = command_list + f"{k}, {v[0]}, {v[2]} \t"
-        print(command_list)
+            command_list = command_list + f"{k}, {v[0]}, {v[2]}\\n"
         command = f'./discord.sh \
                     --webhook-url="{webhook}" \
-                    --username "GiteaBot" \
-                    --avatar "https://docs.gitea.io/images/gitea.png" \
+                    --username "TestBot" \
+                    --avatar "https://musique.opus-31.fr/images/aaa.png" \
                     --text "{command_list}"'
-        #print(command)
-        #msg = os.popen(command).read()
-        # if "fatal" in msg:
-        #     print("ERROR : Something went wrong while running 'discord.sh' (webhook?). \t PASS".expandtabs(90))
-        # else:
-        #     print("DEBUG : Discord message sent successfully. \t DONE".expandtabs(90))
+        msg = os.popen(command).read()
+        if "fatal" in msg:
+            print("ERROR : Something went wrong while running 'discord.sh' (webhook?).")
+        else:
+            print("INFO : Discord message sent successfully.")

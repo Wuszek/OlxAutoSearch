@@ -50,21 +50,22 @@ class OlxSearch:
         return new_items
 
     @staticmethod
-    def ping(dictionary: dict):
+    def ping(dictionary: dict, hook):
         if dictionary != {}:
-            send_notification(dictionary, "Fake_hook_url")
+            send_notification(dictionary, hook)
         else:
-            print("No items to send")
+            print("INFO : No items to send")
 
     @staticmethod
     def getOpt(argv):
         parser = argparse.ArgumentParser \
-            (usage="python3 olx.py -i <item_to_search> -c <city_to_search> -v <max_value> [-h]",
+            (usage="python3 olx.py -i <item_to_search> -c <city_to_search> -v <max_value> [-w <webhook_url> ] [-h]",
              description="Description",
              epilog="© 2022, wiktor.kobiela", prog="OlxAutoSearch",
              add_help=False,
              formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=120, width=250))
         required = parser.add_argument_group('required arguments')
+        optional = parser.add_argument_group('optional arguments')
         helpful = parser.add_argument_group('helpful arguments')
         required.add_argument('-i', action='store', dest="item", required=True, metavar="<item_to_search>",
                               help='Provide item name, that should be searched')
@@ -72,20 +73,23 @@ class OlxSearch:
                               help='Provide city name, where item should be searched')
         required.add_argument('-v', action='store', dest="value", required=True, metavar="<value>",
                               help='Provide max value of searched item')
+        optional.add_argument('-w', action='store', dest="webhook", default="no", metavar="<webhook_url>",
+                              help="Provide discord webhook url - default notifications are off.")
         helpful.add_argument('-h', action='help', help='Show this help message and exit')
         args = parser.parse_args()
-        return args.item, args.city, args.value
+        return args.item, args.city, args.value, args.webhook
 
 
 olx = OlxSearch()
-item, city, value = olx.getOpt(sys.argv[1:])
+item, city, value, webhook = olx.getOpt(sys.argv[1:])
 olx.start()
 olx.initiate_search(item_to_search=item, city_to_search=city)
 t_list, p_list, l_list, u_list = olx.get_all_items()
 d = olx.create_dict(t_list, p_list, l_list, u_list, city, value)
 new_items = olx.write_to_file(dictionary=d)
-
-olx.ping(new_items)
+print(webhook)
+if webhook != "no":
+    olx.ping(dictionary=new_items, hook=webhook)
 
 """
 Test dictionary
