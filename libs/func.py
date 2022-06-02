@@ -38,19 +38,19 @@ def create_database(given_dictionary: dict):
     with open("data", 'r+') as file:
         file.seek(0)
         lines = [line.rstrip() for line in file.readlines()]
-        print(f"INFO : Old list with links: {lines}")
+        print(f"INFO : Database content: {lines}")
         for k, v in list(given_dictionary.items()):
             if v[2] in lines:
-                print(f"INFO : {v[2]} already in database")
+                print(f"INFO : {v[2]} already in database.")
                 del given_dictionary[k]
             else:
-                print(f"INFO : {v[2]} is new")
+                print(f"INFO : {v[2]} is new!")
                 lines.append(v[2])
         if given_dictionary != {}:
             print(f"INFO : New items to send notification: {given_dictionary}")
         else:
             print(f"INFO : No new items (all items from olx already in database).")
-        print(f"INFO : Updated list with links: {lines}")
+        print(f"INFO : Updated database: {lines}")
         while "" in lines:
             lines.remove("")
         file.seek(0)

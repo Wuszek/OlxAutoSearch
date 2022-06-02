@@ -40,7 +40,7 @@ class OlxSearch:
         new_dict = {k: v for k, *v in zip(tlist, plist, llist, ulist)}
         items_dict = create_dictionary(new_dict, given_city, max_value)
         print(f"INFO : There are {len(items_dict)} items matching given requirements:")
-        for k, v in items_dict.items(): print(f"DICT : {k}: {v}")
+        for k, v in items_dict.items(): print(f"INFO : {k}: {v}")
         self.driver.quit()
         return items_dict
 
