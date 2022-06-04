@@ -1,3 +1,5 @@
 argparse
 selenium
 webdriver_manager
+requests
+platform

@@ -1,5 +1,6 @@
 import os
 import re
+from libs.setup import discord_notify_setup
 
 
 def create_elements_list(items_list: list, elem_to_cut, attribute):
@@ -37,22 +38,40 @@ def create_database(given_dictionary: dict):
     with open("data", 'r+') as file:
         file.seek(0)
         lines = [line.rstrip() for line in file.readlines()]
-        print(f"INFO : Old list with links: {lines}")
+        print(f"INFO : Database content: {lines}")
         for k, v in list(given_dictionary.items()):
             if v[2] in lines:
-                print(f"INFO : {v[2]} already in database")
+                print(f"INFO : {v[2]} already in database.")
                 del given_dictionary[k]
             else:
-                print(f"INFO : {v[2]} is new")
+                print(f"INFO : {v[2]} is new!")
                 lines.append(v[2])
         if given_dictionary != {}:
             print(f"INFO : New items to send notification: {given_dictionary}")
         else:
-            print(f"INFO : No new items")
-        print(f"INFO : Updated list with links: {lines}")
+            print(f"INFO : No new items (all items from olx already in database).")
+        print(f"INFO : Updated database: {lines}")
         while "" in lines:
             lines.remove("")
         file.seek(0)
         file.truncate()
         file.write("\n".join(lines))
     file.close()
+    return given_dictionary
+
+
+def send_notification(new_items: dict, webhook):
+    if discord_notify_setup():
+        command_list = ""
+        for k, v in list(new_items.items()):
+            command_list = command_list + f"{k}, {v[0]}, {v[2]}\\n"
+        command = f'./discord.sh \
+                    --webhook-url="{webhook}" \
+                    --username "TestBot" \
+                    --avatar "https://musique.opus-31.fr/images/aaa.png" \
+                    --text "{command_list}"'
+        msg = os.popen(command).read()
+        if "fatal" in msg:
+            print("ERROR : Something went wrong while running 'discord.sh' (webhook?).")
+        else:
+            print("INFO : Discord message sent successfully.")
