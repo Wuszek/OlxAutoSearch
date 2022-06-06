@@ -87,7 +87,6 @@ olx.initiate_search(item_to_search=item, city_to_search=city)
 t_list, p_list, l_list, u_list = olx.get_all_items()
 d = olx.create_dict(t_list, p_list, l_list, u_list, city, value)
 new_items = olx.write_to_file(dictionary=d)
-print(webhook)
 if webhook != "no":
     olx.ping(dictionary=new_items, hook=webhook)
 
