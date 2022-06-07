@@ -47,7 +47,6 @@ helpful arguments:
   -h                      Show this help message and exit
 
 © 2022, wiktor.kobiela
-
 ```
 #### Example usage: 
 Search IKEA MICKE in Gdańsk city for less than 300 and send notification about new items.
