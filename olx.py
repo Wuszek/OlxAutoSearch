@@ -46,8 +46,8 @@ class OlxSearch:
 
     @staticmethod
     def write_to_file(dictionary: dict):
-        new_items = create_database(dictionary)
-        return new_items
+        items = create_database(dictionary)
+        return items
 
     @staticmethod
     def ping(dictionary: dict, hook):

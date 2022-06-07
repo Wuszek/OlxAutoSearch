@@ -1,7 +1,5 @@
 import os
 import re
-
-import catch as catch
 import requests
 
 
