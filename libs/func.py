@@ -1,6 +1,8 @@
 import os
 import re
-import platform
+
+import catch as catch
+import requests
 
 
 def create_elements_list(items_list: list, elem_to_cut, attribute):
@@ -61,30 +63,14 @@ def create_database(given_dictionary: dict):
 
 
 def send_notification(new_items: dict, webhook):
-    command = ""
     command_list = ""
     for k, v in list(new_items.items()):
-        command_list = command_list + f"{k}, {v[0]}, {v[2]}\\n"
-    if platform.system() == 'Linux':
-        command = f'curl -H "Content-Type: application/json" ' \
-                  f'-d \'{{"username": "OlxBot", "content": "{command_list}", ' \
-                  f'"avatar_url": "https://bit.ly/38Uy6Tz"}}\' ' \
-                  f'"{webhook}"'
+        command_list = command_list + f"{k}, {v[0]}, {v[2]}\n"
 
-    """
-    Activate Windows powershell notification:
-    
-    elif platform.system() == "Windows":
-        command = r'''curl.exe -H "Content-Type: application/json" -d 
-                      '{\"username\": \"OlxBot\", \"content\": \"{command_list}\"}' $WEBHOOK_URL'''    
-    """
-
-    msg = os.popen(command).read()
-    if "Webhook" in msg:
-        print("ERROR : There is something wrong with given webhook.")
-    elif "JSON" in msg:
-        print("ERROR : There is something wrong with JSON in curl command.")
-    else:
+    payload = {'username': 'OlxBot', "content": ''.join(command_list), "avatar_url": "https://bit.ly/38Uy6Tz"}
+    try:
+        requests.post(webhook, data=payload)
         print("INFO : Discord message sent successfully.")
-
+    except Exception as e:
+        print(f"ERROR : There was an error during sending notification: {e}.")
 

@@ -92,6 +92,7 @@ if webhook != "no":
 
 """
 Test dictionary
+
 d = {
     "kanapa1": ["rzecz 1", "rzecz15", "https://link_do_czegos.com"],
     "kanapa2": ["rzecz 2", "rzecz25", "https://link_do_czegos2.com"],
@@ -99,3 +100,5 @@ d = {
     "kanapa6": ["cena", "lokalizacja", "https://link_do_itemka.com"]
 }
 """
+
+
