@@ -1,6 +1,6 @@
 import os
 import re
-from libs.setup import discord_notify_setup
+import requests
 
 
 def create_elements_list(items_list: list, elem_to_cut, attribute):
@@ -61,17 +61,14 @@ def create_database(given_dictionary: dict):
 
 
 def send_notification(new_items: dict, webhook):
-    if discord_notify_setup():
-        command_list = ""
-        for k, v in list(new_items.items()):
-            command_list = command_list + f"{k}, {v[0]}, {v[2]}\\n"
-        command = f'./discord.sh \
-                    --webhook-url="{webhook}" \
-                    --username "TestBot" \
-                    --avatar "https://musique.opus-31.fr/images/aaa.png" \
-                    --text "{command_list}"'
-        msg = os.popen(command).read()
-        if "fatal" in msg:
-            print("ERROR : Something went wrong while running 'discord.sh' (webhook?).")
-        else:
-            print("INFO : Discord message sent successfully.")
+    command_list = ""
+    for k, v in list(new_items.items()):
+        command_list = command_list + f"{k}, {v[0]}, {v[2]}\n"
+
+    payload = {'username': 'OlxBot', "content": ''.join(command_list), "avatar_url": "https://bit.ly/38Uy6Tz"}
+    try:
+        requests.post(webhook, data=payload)
+        print("INFO : Discord message sent successfully.")
+    except Exception as e:
+        print(f"ERROR : There was an error during sending notification: {e}.")
+

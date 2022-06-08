@@ -1,7 +1,5 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementClickInterceptedException
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 
 
 def search_by_id(driver, element_id):

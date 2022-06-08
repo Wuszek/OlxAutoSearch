@@ -46,8 +46,8 @@ class OlxSearch:
 
     @staticmethod
     def write_to_file(dictionary: dict):
-        new_items = create_database(dictionary)
-        return new_items
+        items = create_database(dictionary)
+        return items
 
     @staticmethod
     def ping(dictionary: dict, hook):
@@ -87,12 +87,12 @@ olx.initiate_search(item_to_search=item, city_to_search=city)
 t_list, p_list, l_list, u_list = olx.get_all_items()
 d = olx.create_dict(t_list, p_list, l_list, u_list, city, value)
 new_items = olx.write_to_file(dictionary=d)
-print(webhook)
 if webhook != "no":
     olx.ping(dictionary=new_items, hook=webhook)
 
 """
 Test dictionary
+
 d = {
     "kanapa1": ["rzecz 1", "rzecz15", "https://link_do_czegos.com"],
     "kanapa2": ["rzecz 2", "rzecz25", "https://link_do_czegos2.com"],
@@ -100,3 +100,5 @@ d = {
     "kanapa6": ["cena", "lokalizacja", "https://link_do_itemka.com"]
 }
 """
+
+
